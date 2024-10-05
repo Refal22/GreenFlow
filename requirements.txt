@@ -1,3 +1,9 @@
 opencv-contrib-python-headless
 ultralytics
+pandas
+numpy
+matplotlib
+seaborn
 moviepy
+lap
+plotly
