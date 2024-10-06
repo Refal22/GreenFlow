@@ -17,7 +17,7 @@ from plotly.subplots import make_subplots
 cfg_enable_url_download = True
 url = "https://archive.org/download/yolo-model-1/YOLO_Model%20%281%29.pt"
 
-model = YOLO("YOLO_Model (1).pt")
+model = "models/YOLO_Model (1).pt" 
 
 # Streamlit page configuration
 st.set_page_config(
