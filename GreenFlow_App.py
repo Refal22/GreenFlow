@@ -252,7 +252,7 @@ def set_view(view):
     st.session_state.view = view
 
 # Load the CSV data
-df = pd.read_csv('vehicle_count_time.csv')
+df = pd.read_csv('data/vehicle_count_time.csv')
 
 # Assuming your dataframe is named df and already available
 # Rename columns to replace 'ROI' with 'Lane'
@@ -362,7 +362,7 @@ df1 = pd.read_csv('data/final_lane_road_data2.csv')
 if page == "SUMO Simulation":
 
     st.markdown("""<div class="header"><h1> SUMO Simulation Dashboard </h1></div>""", unsafe_allow_html=True)
-    sumo_video_path = r"C:\Users\Ref42\OneDrive\سطح المكتب\Capestone_Project\Befor_Agent.mp4"
+    sumo_video_path = "videos/Befor_Agent.mp4"
     st.video(sumo_video_path)
     # st.write("This video shows the simulated traffic signal actions using SUMO")
 
@@ -483,10 +483,10 @@ if page == "SUMO Simulation":
 
 if page == "SUMO Simulation With Agent":
     st.markdown("""<div class="header"><h1> SUMO Simulation Dashboard</h1></div>""", unsafe_allow_html=True)
-    sumo_video_path = r"C:\Users\Ref42\OneDrive\سطح المكتب\Capestone_Project\After_Agent.mp4"
+    sumo_video_path = "videos/After_Agent.mp4"
     st.video(sumo_video_path)
 
-    df = pd.read_csv('simulation_data_last.csv')
+    df = pd.read_csv('data/simulation_data_last.csv')
     # Create a mapping for Edge ID to road names
     road_mapping = {edge: f"Road {i+1}" for i, edge in enumerate(df['Edge ID'].unique())}
     df['Road'] = df['Edge ID'].map(road_mapping)  # Create a new column 'Road'
@@ -606,7 +606,7 @@ if page == "SUMO Simulation With Agent":
 
 
 
-    df1 = pd.read_csv('final_lane_road_data2.csv')
+    df1 = pd.read_csv('data/final_lane_road_data2.csv')
 
     # Check if 'Lane ID' exists in df1
     if 'Lane ID' in df1.columns:
@@ -618,7 +618,7 @@ if page == "SUMO Simulation With Agent":
         st.error("'Lane ID' column not found in df1!")
 
 
-    df2 = pd.read_csv('simulation_data_last.csv')
+    df2 = pd.read_csv('data/simulation_data_last.csv')
     # Check if 'Lane ID' exists in df2
     if 'Lane ID' in df.columns:
         # Extract average waiting times for "All Lanes" from df2
