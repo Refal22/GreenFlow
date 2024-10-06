@@ -14,10 +14,22 @@ import plotly.express as px
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
+# Enable URL download for the model
 cfg_enable_url_download = True
-url = "https://archive.org/download/yolo-model-1/YOLO_Model%20%281%29.pt"
 
-model = "models/YOLO_Model (1).pt" 
+# URL for the YOLO model
+url = "https://archive.org/download/yolo-model-1/YOLO_Model%20%281%29.pt"
+model_path = "models/YOLO_Model (1).pt"
+
+# Ensure the model directory exists
+os.makedirs(os.path.dirname(model_path), exist_ok=True)
+
+# Download the model if it doesn't exist
+if cfg_enable_url_download and not os.path.exists(model_path):
+    urllib.request.urlretrieve(url, model_path)
+
+# Load the YOLO model
+model = YOLO(model_path)
 
 # Streamlit page configuration
 st.set_page_config(
