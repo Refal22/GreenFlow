@@ -358,7 +358,7 @@ if page == "Dashboard":
 
     st.pyplot(fig3)
 
-df1 = pd.read_csv('final_lane_road_data2.csv')
+df1 = pd.read_csv('data/final_lane_road_data2.csv')
 if page == "SUMO Simulation":
 
     st.markdown("""<div class="header"><h1> SUMO Simulation Dashboard </h1></div>""", unsafe_allow_html=True)
