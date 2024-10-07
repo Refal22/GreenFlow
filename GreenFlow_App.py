@@ -274,7 +274,7 @@ if st.session_state.page == "Visual Content Processing":
                 break
 
             # YOLO detection
-            results = model.track(frame, persist=True)
+            results = model_path.track(frame, persist=True)
 
             for result in results:
                 for obj in result.boxes:
