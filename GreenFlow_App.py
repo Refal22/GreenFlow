@@ -935,7 +935,7 @@ if st.session_state.page == "SUMO Simulation With Agent":
     st.markdown("<div style='margin-bottom: 100px;'></div>", unsafe_allow_html=True)
 
     before_data = pd.read_csv('data/final_lane_road_data2.csv')  # يحتوي على بيانات قبل إضافة الوكيل
-    after_data = pd.read_csv('data/simulation_data.csv')  # يحتوي على بيانات بعد إضافة الوكيل
+    after_data = pd.read_csv('data/simulation_data_last.csv')  # يحتوي على بيانات بعد إضافة الوكيل
 
         # تصفية البيانات للحصول على المعلومات الخاصة بجميع المسارات (All Lanes)
     before_data_filtered = before_data[before_data['Lane ID'] == 'All Lanes'][['Edge ID', 'Average Waiting Time (Road) (s)']]
