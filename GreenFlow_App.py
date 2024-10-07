@@ -30,7 +30,7 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Add a custom design to beautify the interface
+# إضافة تصميم خاص لتجميل الواجهة
 st.markdown("""
     <style>
     body {
@@ -80,14 +80,14 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Page title and logo
+# عنوان الصفحة والشعار
 st.markdown("""
     <div class="header">
         <img src="https://i.imgur.com/J0mk9eN.png" width=500 alt='GreenFlow'>
     </div>
 """, unsafe_allow_html=True)
 
-# Custom design for buttons and GreenFlow title
+# تصميم خاص للأزرار وعنوان GreenFlow
 custom_style = """
     <style>
     .stButton button {
@@ -106,19 +106,19 @@ custom_style = """
     }
     .greenflow-title {
         font-family: 'Poppins', sans-serif;
-        font-size: 50px !important; /* Increase font size */
+        font-size: 50px !important; /* تكبير حجم الخط */
         font-weight: bold;
-        color: #4CAF50; /* Green color */
+        color: #4CAF50; /* اللون الأخضر */
         text-align: center;
         margin-bottom: 100px;
     }
     </style>
 """
 
-# Add the design to the page
+# إضافة التصميم للصفحة
 st.markdown(custom_style, unsafe_allow_html=True)
 
-# Handling the page state
+# معالجة حالة الصفحة
 if 'page' not in st.session_state:
     st.session_state.page = 'Visual Content Processing'
 
@@ -126,7 +126,7 @@ def switch_page(page):
     st.session_state.page = page
 
 
-# Enhancements to the sidebar
+# تحسينات على السايدبار
 st.sidebar.markdown("""
     <style>
     .sidebar .sidebar-content {
@@ -178,13 +178,13 @@ st.sidebar.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Enhancements to the sidebar
+# تحسينات السايدبار
 st.sidebar.markdown("<div class='sidebar-content'>", unsafe_allow_html=True)
 
-# GreenFlow system title with the new design
+# عنوان النظام GreenFlow مع التصميم الجديد
 st.sidebar.markdown("<h3 class='greenflow-title'>GreenFlow</h3>", unsafe_allow_html=True)
 
-# Adding control buttons to the interface
+# إضافة أزرار التحكم في الواجهة
 st.sidebar.markdown("<div class='sidebar-buttons'>", unsafe_allow_html=True)
 
 if st.sidebar.button("Visual Content Processing"):
@@ -198,7 +198,6 @@ if st.sidebar.button("SUMO Simulation With Agent"):
 
 
 st.sidebar.markdown("<br><br><br>", unsafe_allow_html=True)
-
 #st.sidebar.image("https://www.vhv.rs/dpng/d/525-5255156_traffic-light-transparent-images-png-transparent-traffic-light.png", width=170)
 
 img = Image.open("videos/traffic_light.png")
@@ -206,6 +205,8 @@ img = Image.open("videos/traffic_light.png")
 # عرض الصورة
 st.sidebar.image(img, use_column_width=True)
 st.sidebar.markdown("</div>", unsafe_allow_html=True)
+
+
 
 if st.session_state.page == "Visual Content Processing":
     st.markdown("""<div class="header"><h1> AI-Based Traffic Light</h1><p> Track, monitor, and manage traffic congestion in Riyadh city 🚦🚗</p></div>""", unsafe_allow_html=True)
@@ -375,195 +376,51 @@ def set_view(view):
 
 
 if st.session_state.page == "Dashboard":
-    st.markdown("""<div class="header"><h1>Traffic Analysis Dashboard</h1></div>""", unsafe_allow_html=True)
+    st.markdown("""<div class="header"><h1> Traffic Analysis Dashboard </h1></div>""", unsafe_allow_html=True)
 
-    # Load data
     df = pd.read_csv('data/vehicle_count_time.csv')
 
-    # Dropdown for street selection
+
     selected_street = st.selectbox("Select a Road", ['Road 1', 'Road 2'])
 
-    # Filter data based on selected street
+    # فلترة البيانات حسب الشارع
     if selected_street == 'Road 1':
         df_filtered = df[df['ROI'].isin(['ROI 1', 'ROI 2', 'ROI 3', 'ROI 4', 'ROI 5'])]
     else:
         df_filtered = df[df['ROI'].isin(['ROI 6', 'ROI 7', 'ROI 8', 'ROI 9', 'ROI 10'])]
 
-    # Calculate total and road-specific wait times
+    # حساب النسبة المئوية لمتوسط وقت الانتظار
     total_wait_time = df['Average Wait Time (s)'].sum()
     road_wait_time = df_filtered['Average Wait Time (s)'].sum()
     percentage_wait_time = (road_wait_time / total_wait_time) * 100
 
-    # Create three main columns for layout
+    # تقسيم الصفحة إلى 3 أعمدة رئيسية
     col1, col2, col3 = st.columns([1, 2, 1])
 
-    # Column 1: Busiest Lane Indicator and Average Wait Time Percentage
+    # استخدام العمود الأول لعرض المؤشرات الخاصة بالازدحام والنسبة المئوية
     with col1:
-        st.markdown("<h3 style='text-align: center;'>Busiest Lane Indicator</h3>", unsafe_allow_html=True)
+        st.markdown(f"<h3 style='text-align: center;'>Busiest Lane Indicator</h3>", unsafe_allow_html=True)
         
-        # Identify busiest lane
+        # حساب المسار الأكثر ازدحامًا
         busiest_lane = df_filtered.loc[df_filtered['Vehicle Count'].idxmax()]
         fig_circle = go.Figure(go.Indicator(
             mode="gauge+number",
             value=busiest_lane['Vehicle Count'],
             title={'text': f"Busiest Lane: {busiest_lane['ROI']}"},
-            gauge={'axis': {'range': [0, df_filtered['Vehicle Count'].max()]}, 'bar': {'color': "red"}}
-        ))
-        # Make the background transparent
-        fig_circle.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
-        st.plotly_chart(fig_circle)
-        st.markdown("<div style='margin-bottom: 100px;'></div>", unsafe_allow_html=True)
-
-        # Display average wait time percentage
-        st.markdown("<h3 style='text-align: center;'>Average Wait Time Percentage</h3>", unsafe_allow_html=True)
-        fig_percentage = go.Figure(go.Indicator(
-            mode="gauge+number",
-            value=percentage_wait_time,
-            number={'suffix': "%"},
-            title={'text': f'Percentage of Wait Time in {selected_street}'},
             gauge={
-                'axis': {'range': [0, 100]},
-                'bar': {'color': "orange"},
-                'steps': [{'range': [0, 50], 'color': "lightgray"}, {'range': [50, 100], 'color': "gray"}]
-            }
-        ))
-        # Make the background transparent
-        fig_percentage.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
-        st.plotly_chart(fig_percentage)
-
-    # Column 2: Pie Charts for Vehicle Count and Average Wait Time
-    with col2:
-        # Pie Chart for vehicle count
-        st.markdown("<h3 style='text-align: center;'>Vehicle Count per Lane</h3>", unsafe_allow_html=True)
-        colors = ['#e0f2e9', '#b2e0d6', '#80c5b5', '#4fb99a', '#26a68a']
-        
-        fig_pie_vehicles = px.pie(df_filtered, values='Vehicle Count', names='ROI', title=' ')
-        fig_pie_vehicles.update_traces(marker=dict(colors=colors))
-        fig_pie_vehicles.update_layout(
-            title={'x': 0.5, 'xanchor': 'center', 'yanchor': 'top'},
-            legend=dict(x=0.5, y=-0.1, xanchor="center", yanchor="top", orientation="h")
-        )
-        fig_pie_vehicles.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
-        st.plotly_chart(fig_pie_vehicles, use_container_width=True)
-        st.markdown("<div style='margin-bottom: 60px;'></div>", unsafe_allow_html=True)
-
-        # Pie Chart for average wait time
-        st.markdown("<h3 style='text-align: center;'>Average Waiting Time per Lane</h3>", unsafe_allow_html=True)
-        fig_pie_wait_time = px.pie(df_filtered, values='Average Wait Time (s)', names='ROI', title=' ')
-        fig_pie_wait_time.update_traces(marker=dict(colors=colors))
-        fig_pie_wait_time.update_layout(
-            title={'x': 0.5, 'xanchor': 'center', 'yanchor': 'top'},
-            legend=dict(x=0.5, y=-0.1, xanchor="center", yanchor="top", orientation="h")
-        )
-        fig_pie_wait_time.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
-        st.plotly_chart(fig_pie_wait_time, use_container_width=True)
-
-    # Column 3: Congestion Levels with Progress Bars
-    with col3:
-        st.markdown("<div style='margin-top: 0px;'></div>", unsafe_allow_html=True) 
-        st.markdown("<h3 style='text-align: center; margin-bottom: 20px;'>Congestion Level</h3>", unsafe_allow_html=True)
-        st.markdown("<div style='margin-top: 70px;'></div>", unsafe_allow_html=True)
-
-        for index, row in df_filtered.iterrows():
-            st.text(f"Lane {row['ROI']} - Vehicles: {row['Vehicle Count']}")
-            congestion_level = min(row['Vehicle Count'] / 50, 1.0)  # Normalize vehicle count
-            
-            # Determine congestion level color
-            if congestion_level >= 0.7:  # High congestion
-                inner_color = "#ff3333"  # Red
-            elif congestion_level >= 0.4:  # Medium congestion
-                inner_color = "#ffcc00"  # Orange
-            else:  # Low congestion
-                inner_color = "#00b300"  # Green
-
-            # Progress bar
-            st.markdown(f"""
-                <div style="position: relative; height: 15px; background-color: #2d2d2d; border-radius: 10px;">
-                    <div style="width: {congestion_level * 100}%; height: 100%; background-color: {inner_color}; border-radius: 10px;"></div>
-                </div>
-                """, unsafe_allow_html=True)
-
-        st.markdown("<div style='margin-bottom: 150px;'></div>", unsafe_allow_html=True)
-
-        # Bar Chart for total vehicles and average wait time
-        st.markdown(f"<h3 style='text-align: center;'>Total Vehicles and Average Wait Time for {selected_street}</h3>", unsafe_allow_html=True)
-
-        # Create summary DataFrame for total vehicles and average wait time
-        df['Street'] = df['ROI'].apply(lambda x: 'Road 1' if x in ['ROI 1', 'ROI 2', 'ROI 3', 'ROI 4', 'ROI 5'] else ('Road 2' if x in ['ROI 6', 'ROI 7', 'ROI 8', 'ROI 9', 'ROI 10'] else 'Other'))
-        summary_df = df[df['Street'] != 'Other'].groupby('Street').agg(
-            Total_Vehicles=('Vehicle Count', 'sum'),
-            Average_Wait_Time=('Average Wait Time (s)', 'mean')
-        ).reset_index()
-
-        # Filter summary DataFrame based on selected street
-        filtered_summary_df = summary_df[summary_df['Street'] == selected_street]
-
-        # Create bar chart
-        fig_bar = px.bar(filtered_summary_df, x='Street', 
-                         y=['Total_Vehicles', 'Average_Wait_Time'], 
-                         barmode='group', 
-                         title=' ',
-                         labels={'value': 'Count', 'Street': 'Street'},
-                         color_discrete_sequence=['#a8ddb5', '#41ab5d'])  # Change colors as needed
-        fig_bar.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
-        st.plotly_chart(fig_bar, use_container_width=True)
-
-if st.session_state.page == "SUMO Simulation":
-    st.markdown("""<div class="header"><h1> Traffic Analysis SUMO Simulation </h1></div>""", unsafe_allow_html=True)
-
-    # Load data from your latest file
-    df = pd.read_csv('data/final_lane_road_data2.csv')
-
-    sumo_video_path2 = "videos/After_Agent.mp4"
-    st.video(sumo_video_path2)
-
-    st.markdown("<br><br><br>", unsafe_allow_html=True)
-    
-    selected_street = st.selectbox("Select a Road", ['Road 1', 'Road 2', 'Road 3', 'Road 4'])
-
-    # Filter data based on the selected street
-    if selected_street == 'Road 1':
-        df_filtered = df[df['Edge ID'] == '636647587#2'][df['Lane ID'].isin(['Lane 1', 'Lane 2', 'Lane 3'])]
-    elif selected_street == 'Road 2':
-        df_filtered = df[df['Edge ID'] == '1306997822#2'][df['Lane ID'].isin(['Lane 1', 'Lane 2', 'Lane 3'])]
-    elif selected_street == 'Road 3':
-        df_filtered = df[df['Edge ID'] == '159072600#3'][df['Lane ID'].isin(['Lane 1', 'Lane 2', 'Lane 3'])]
-    else:
-        df_filtered = df[df['Edge ID'] == '53823318#1'][df['Lane ID'].isin(['Lane 1', 'Lane 2', 'Lane 3'])]
-
-    # Calculate the percentage of average wait time
-    total_wait_time = df['Average Waiting Time (Lane) (s)'].sum()
-    road_wait_time = df_filtered['Average Waiting Time (Lane) (s)'].sum()
-    percentage_wait_time = (road_wait_time / total_wait_time) * 100
-
-    # Split the page into 3 main columns
-    col1, col2, col3 = st.columns([1, 2, 1])
-
-    # Use the first column to display congestion indicators and percentage
-    with col1:
-        st.markdown(f"<h3 style='text-align: center;'>Busiest Lane Indicator</h3>", unsafe_allow_html=True)
-        
-        # Calculate the busiest lane
-        busiest_lane = df_filtered.loc[df_filtered['Total Vehicle Count'].idxmax()]
-        fig_circle = go.Figure(go.Indicator(
-            mode="gauge+number",
-            value=busiest_lane['Total Vehicle Count'],
-            title={'text': f"Busiest Lane: {busiest_lane['Lane ID']}"},
-            gauge={
-                'axis': {'range': [0, df_filtered['Total Vehicle Count'].max()]},
+                'axis': {'range': [0, df_filtered['Vehicle Count'].max()]},
                 'bar': {'color': "red"}
             }
         ))
-        # Adjust the background to make it transparent
+        # تعديل الخلفية لجعلها شفافة
         fig_circle.update_layout(
-            paper_bgcolor='rgba(0,0,0,0)',  # Remove paper background
-            plot_bgcolor='rgba(0,0,0,0)'    # Remove plot background
+            paper_bgcolor='rgba(0,0,0,0)',  # إزالة خلفية الورقة
+            plot_bgcolor='rgba(0,0,0,0)'    # إزالة خلفية الرسم
         )
         st.plotly_chart(fig_circle)
-
         st.markdown("<div style='margin-bottom: 100px;'></div>", unsafe_allow_html=True)
 
-        # Display average wait time percentage
+        # عرض النسبة المئوية لمتوسط وقت الانتظار
         st.markdown(f"<h3 style='text-align: center;'>Average Wait Time Percentage</h3>", unsafe_allow_html=True)
         
         fig_percentage = go.Figure(go.Indicator(
@@ -579,71 +436,258 @@ if st.session_state.page == "SUMO Simulation":
                     {'range': [50, 100], 'color': "gray"}]
             }
         ))
-        # Adjust the background to make it transparent
+        # تعديل الخلفية لجعلها شفافة
         fig_percentage.update_layout(
-            paper_bgcolor='rgba(0,0,0,0)',  # Remove paper background
-            plot_bgcolor='rgba(0,0,0,0)'    # Remove plot background
+            paper_bgcolor='rgba(0,0,0,0)',  # إزالة خلفية الورقة
+            plot_bgcolor='rgba(0,0,0,0)'    # إزالة خلفية الرسم
         )
         st.plotly_chart(fig_percentage)
 
-    # Use the second column to display charts (Pie Charts)
+    # استخدام العمود الثاني لعرض الرسوم البيانية (Pie Charts)
     with col2:
-        # Pie chart for vehicle counts
+        # رسم الدائري (Pie Chart) لعدد السيارات
         st.markdown(f"<h3 style='text-align: center;'>Vehicle Count per Lane</h3>", unsafe_allow_html=True)
-        colors = ['#e0f2e9', '#b2e0d6', '#4fb99a']
+        colors =  ['#e0f2e9', '#b2e0d6', '#80c5b5', '#4fb99a','#26a68a']
 
-        fig_pie_vehicles = px.pie(df_filtered, values='Total Vehicle Count', names='Lane ID', title=' ')
+        fig_pie_vehicles = px.pie(df_filtered, values='Vehicle Count', names='ROI', title=f' ')
         fig_pie_vehicles.update_traces(marker=dict(colors=colors))
         fig_pie_vehicles.update_layout(
             title={
-                'x': 0.5,  # Center title horizontally
-                'xanchor': 'center',  # Ensure center is the anchoring point
-                'yanchor': 'top'  # Title at the top
+                'x': 0.5,  # محاذاة العنوان في المنتصف أفقيًا
+                'xanchor': 'center',  # تأكد من أن المركز هو نقطة التوسيط
+                'yanchor': 'top'  # العنوان في الأعلى
             },
             legend=dict(
-                x=0.5,  # Center legend horizontally
-                y=-0.1,  # Legend at the bottom vertically, adjust as needed
-                xanchor="center",  # Center legend
-                yanchor="top",  # Align legend vertically at the top
-                orientation="h"  # Horizontal legend
+                x=0.5,  # تمركز الأسطورة في الوسط أفقياً
+                y=-0.1,  # الأسطورة في الأسفل عمودياً، يمكنك ضبط هذه القيمة حسب الحاجة
+                xanchor="center",  # محاذاة الأسطورة إلى الوسط
+                yanchor="top",  # محاذاة عمودية إلى الأعلى
+                orientation="h"  # إذا أردت وضع الأسطورة بشكل أفقي
             )
         )
-        # Adjust the background to make it transparent
+        # تعديل الخلفية لجعلها شفافة
         fig_pie_vehicles.update_layout(
-            paper_bgcolor='rgba(0,0,0,0)',  # Remove paper background
-            plot_bgcolor='rgba(0,0,0,0)'    # Remove plot background
+            paper_bgcolor='rgba(0,0,0,0)',  # إزالة خلفية الورقة
+            plot_bgcolor='rgba(0,0,0,0)'    # إزالة خلفية الرسم
+        )
+        st.plotly_chart(fig_pie_vehicles, use_container_width=True)
+        st.markdown("<div style='margin-bottom: 60px;'></div>", unsafe_allow_html=True)
+
+        # رسم الدائري (Pie Chart) لمتوسط وقت الانتظار
+        st.markdown(f"<h3 style='text-align: center;'>Average Waiting Time per Lane</h3>", unsafe_allow_html=True)
+        fig_pie_wait_time = px.pie(df_filtered, values='Average Wait Time (s)', names='ROI', title=f' ')
+        fig_pie_wait_time.update_traces(marker=dict(colors=colors))
+        fig_pie_wait_time.update_layout(
+            title={
+                'x': 0.5,  # محاذاة العنوان في المنتصف أفقيًا
+                'xanchor': 'center',  # تأكد من أن المركز هو نقطة التوسيط
+                'yanchor': 'top'  # العنوان في الأعلى
+            },
+            legend=dict(
+                x=0.5,  # تمركز الأسطورة في الوسط أفقياً
+                y=-0.1,  # الأسطورة في الأسفل عمودياً، يمكنك ضبط هذه القيمة حسب الحاجة
+                xanchor="center",  # محاذاة الأسطورة إلى الوسط
+                yanchor="top",  # محاذاة عمودية إلى الأعلى
+                orientation="h"  # إذا أردت وضع الأسطورة بشكل أفقي
+            )
+        )
+        # تعديل الخلفية لجعلها شفافة
+        fig_pie_wait_time.update_layout(
+            paper_bgcolor='rgba(0,0,0,0)',  # إزالة خلفية الورقة
+            plot_bgcolor='rgba(0,0,0,0)'    # إزالة خلفية الرسم
+        )
+        st.plotly_chart(fig_pie_wait_time, use_container_width=True)
+
+    # استخدام العمود الثالث لعرض حالة الازدحام باستخدام Progress Bars
+    with col3:
+        st.markdown("<div style='margin-top: 0px;'></div>", unsafe_allow_html=True) 
+        st.markdown(f"<h3 style='text-align: center; margin-bottom: 20px;'>Congestion Level</h3>", unsafe_allow_html=True)
+        st.markdown("<div style='margin-top: 70px;'></div>", unsafe_allow_html=True)
+
+        for index, row in df_filtered.iterrows():
+            st.text(f"Lane {row['ROI']} - Vehicles: {row['Vehicle Count']}")
+            congestion_level = min(row['Vehicle Count'] / 50, 1.0)  # تطبيع قيمة عدد السيارات
+            
+            if congestion_level >= 0.7:  # ازدحام عالي
+                    inner_color = "#ff3333"  # أحمر داخلي
+            elif congestion_level >= 0.4:  # ازدحام متوسط
+                    inner_color = "#ffcc00"  # برتقالي داخلي
+            else:  # ازدحام منخفض
+                    inner_color = "#00b300"  # أخضر داخلي
+
+                # تطبيق شريط التقدم مع لون الإطار الخارجي الثابت ولون داخلي متغير
+            st.markdown(f"""
+                <div style="position: relative; height: 15px; background-color: #2d2d2d; border-radius: 10px;">
+                    <div style="width: {congestion_level * 100}%; height: 100%; background-color: {inner_color}; border-radius: 10px;"></div>
+                </div>
+                """, unsafe_allow_html=True)
+
+        st.markdown("<div style='margin-bottom: 150px;'></div>", unsafe_allow_html=True)
+
+        # رسم بار لتوضيح عدد السيارات ومتوسط وقت الانتظار لكل شارع تحت Progress Bars
+        st.markdown(f"<h3 style='text-align: center;'>Total Vehicles and Average Wait Time for {selected_street}</h3>", unsafe_allow_html=True)
+
+        # إنشاء DataFrame جديد يحتوي على العدد الإجمالي ومتوسط وقت الانتظار لكل شارع
+        df['Street'] = df['ROI'].apply(lambda x: 'Road 1' if x in ['ROI 1', 'ROI 2', 'ROI 3', 'ROI 4', 'ROI 5'] else ('Road 2' if x in ['ROI 6', 'ROI 7', 'ROI 8', 'ROI 9', 'ROI 10'] else 'Other'))
+        summary_df = df[df['Street'] != 'Other'].groupby('Street').agg(
+                        Total_Vehicles=('Vehicle Count', 'sum'),
+                        Average_Wait_Time=('Average Wait Time (s)', 'mean')
+                    ).reset_index()
+
+        # فلترة البيانات على أساس الشارع المختار
+        filtered_summary_df = summary_df[summary_df['Street'] == selected_street]
+
+        # رسم بياني من نوع Bar Chart في نفس العمود
+        fig_bar = px.bar(filtered_summary_df, x='Street', 
+                                y=['Total_Vehicles', 'Average_Wait_Time'], 
+                                barmode='group', 
+                                title=f' ',
+                                labels={'value': 'Count', 'Street': 'Street'},
+                                color_discrete_sequence=['#a8ddb5', '#41ab5d'])  # يمكنك تغيير الألوان كما تريد
+        # تعديل الخلفية لجعلها شفافة
+        fig_bar.update_layout(
+            paper_bgcolor='rgba(0,0,0,0)',  # إزالة خلفية الورقة
+            plot_bgcolor='rgba(0,0,0,0)'    # إزالة خلفية الرسم
+        )
+        st.plotly_chart(fig_bar, use_container_width=True)
+
+if st.session_state.page == "SUMO Simulation":
+    st.markdown("""<div class="header"><h1> Traffic Analysis SUMO Simulation </h1></div>""", unsafe_allow_html=True)
+
+    # تحميل البيانات من ملفك الأخير
+    df = pd.read_csv('data/final_lane_road_data2.csv')
+
+    sumo_video_path2 = "videos/After_Agent.mp4"
+    st.video(sumo_video_path2)
+
+    st.markdown("<br><br><br>", unsafe_allow_html=True)
+    
+    selected_street = st.selectbox("Select a Road", ['Road 1', 'Road 2', 'Road 3', 'Road 4'])
+
+    # فلترة البيانات بناءً على الشارع المختار
+    if selected_street == 'Road 1':
+        df_filtered = df[df['Edge ID'] == '636647587#2'][df['Lane ID'].isin(['Lane 1', 'Lane 2', 'Lane 3'])]
+    elif selected_street == 'Road 2':
+        df_filtered = df[df['Edge ID'] == '1306997822#2'][df['Lane ID'].isin(['Lane 1', 'Lane 2', 'Lane 3'])]
+    elif selected_street == 'Road 3':
+        df_filtered = df[df['Edge ID'] == '159072600#3'][df['Lane ID'].isin(['Lane 1', 'Lane 2', 'Lane 3'])]
+    else:
+        df_filtered = df[df['Edge ID'] == '53823318#1'][df['Lane ID'].isin(['Lane 1', 'Lane 2', 'Lane 3'])]
+
+    # حساب النسبة المئوية لمتوسط وقت الانتظار
+    total_wait_time = df['Average Waiting Time (Lane) (s)'].sum()
+    road_wait_time = df_filtered['Average Waiting Time (Lane) (s)'].sum()
+    percentage_wait_time = (road_wait_time / total_wait_time) * 100
+
+    # تقسيم الصفحة إلى 3 أعمدة رئيسية
+    col1, col2, col3 = st.columns([1, 2, 1])
+
+    # استخدام العمود الأول لعرض المؤشرات الخاصة بالازدحام والنسبة المئوية
+    with col1:
+        st.markdown(f"<h3 style='text-align: center;'>Busiest Lane Indicator</h3>", unsafe_allow_html=True)
+        
+        # حساب المسار الأكثر ازدحامًا
+        busiest_lane = df_filtered.loc[df_filtered['Total Vehicle Count'].idxmax()]
+        fig_circle = go.Figure(go.Indicator(
+            mode="gauge+number",
+            value=busiest_lane['Total Vehicle Count'],
+            title={'text': f"Busiest Lane: {busiest_lane['Lane ID']}"},
+            gauge={
+                'axis': {'range': [0, df_filtered['Total Vehicle Count'].max()]},
+                'bar': {'color': "red"}
+            }
+        ))
+        # تعديل الخلفية لجعلها شفافة
+        fig_circle.update_layout(
+            paper_bgcolor='rgba(0,0,0,0)',  # إزالة خلفية الورقة
+            plot_bgcolor='rgba(0,0,0,0)'    # إزالة خلفية الرسم
+        )
+        st.plotly_chart(fig_circle)
+
+        st.markdown("<div style='margin-bottom: 100px;'></div>", unsafe_allow_html=True)
+
+        # عرض النسبة المئوية لمتوسط وقت الانتظار
+        st.markdown(f"<h3 style='text-align: center;'>Average Wait Time Percentage</h3>", unsafe_allow_html=True)
+        
+        fig_percentage = go.Figure(go.Indicator(
+            mode="gauge+number",
+            value=percentage_wait_time,
+            number={'suffix': "%"},
+            title={'text': f'Percentage of Wait Time in {selected_street}'},
+            gauge={
+                'axis': {'range': [0, 100]},
+                'bar': {'color': "orange"},
+                'steps': [
+                    {'range': [0, 50], 'color': "lightgray"},
+                    {'range': [50, 100], 'color': "gray"}]
+            }
+        ))
+        # تعديل الخلفية لجعلها شفافة
+        fig_percentage.update_layout(
+            paper_bgcolor='rgba(0,0,0,0)',  # إزالة خلفية الورقة
+            plot_bgcolor='rgba(0,0,0,0)'    # إزالة خلفية الرسم
+        )
+        st.plotly_chart(fig_percentage)
+
+    # استخدام العمود الثاني لعرض الرسوم البيانية (Pie Charts)
+    with col2:
+        # رسم الدائري (Pie Chart) لعدد السيارات
+        st.markdown(f"<h3 style='text-align: center;'>Vehicle Count per Lane</h3>", unsafe_allow_html=True)
+        colors = ['#e0f2e9', '#b2e0d6','#4fb99a']
+
+
+        fig_pie_vehicles = px.pie(df_filtered, values='Total Vehicle Count', names='Lane ID', title=f' ')
+        fig_pie_vehicles.update_traces(marker=dict(colors=colors))
+        fig_pie_vehicles.update_layout(
+            title={
+                'x': 0.5,  # محاذاة العنوان في المنتصف أفقيًا
+                'xanchor': 'center',  # تأكد من أن المركز هو نقطة التوسيط
+                'yanchor': 'top'  # العنوان في الأعلى
+            },
+            legend=dict(
+                x=0.5,  # تمركز الأسطورة في الوسط أفقياً
+                y=-0.1,  # الأسطورة في الأسفل عمودياً، يمكنك ضبط هذه القيمة حسب الحاجة
+                xanchor="center",  # محاذاة الأسطورة إلى الوسط
+                yanchor="top",  # محاذاة عمودية إلى الأعلى
+                orientation="h"  # إذا أردت وضع الأسطورة بشكل أفقي
+            )
+        )
+        # تعديل الخلفية لجعلها شفافة
+        fig_pie_vehicles.update_layout(
+            paper_bgcolor='rgba(0,0,0,0)',  # إزالة خلفية الورقة
+            plot_bgcolor='rgba(0,0,0,0)'    # إزالة خلفية الرسم
         )
         st.plotly_chart(fig_pie_vehicles, use_container_width=True)
         
         st.markdown("<div style='margin-bottom: 60px;'></div>", unsafe_allow_html=True)
 
-        # Pie chart for average wait time
+        # رسم الدائري (Pie Chart) لمتوسط وقت الانتظار
         st.markdown(f"<h3 style='text-align: center;'>Average Waiting Time per Lane</h3>", unsafe_allow_html=True)
 
-        fig_pie_wait_time = px.pie(df_filtered, values='Average Waiting Time (Lane) (s)', names='Lane ID', title=' ')
+        fig_pie_wait_time = px.pie(df_filtered, values='Average Waiting Time (Lane) (s)', names='Lane ID', title=f' ')
         fig_pie_wait_time.update_traces(marker=dict(colors=colors))
         fig_pie_wait_time.update_layout(
             title={
-                'x': 0.5,  # Center title horizontally
-                'xanchor': 'center',  # Ensure center is the anchoring point
-                'yanchor': 'top'  # Title at the top
+                'x': 0.5,  # محاذاة العنوان في المنتصف أفقيًا
+                'xanchor': 'center',  # تأكد من أن المركز هو نقطة التوسيط
+                'yanchor': 'top'  # العنوان في الأعلى
             },
             legend=dict(
-                x=0.5,  # Center legend horizontally
-                y=-0.1,  # Legend at the bottom vertically, adjust as needed
-                xanchor="center",  # Center legend
-                yanchor="top",  # Align legend vertically at the top
-                orientation="h"  # Horizontal legend
+                x=0.5,  # تمركز الأسطورة في الوسط أفقياً
+                y=-0.1,  # الأسطورة في الأسفل عمودياً، يمكنك ضبط هذه القيمة حسب الحاجة
+                xanchor="center",  # محاذاة الأسطورة إلى الوسط
+                yanchor="top",  # محاذاة عمودية إلى الأعلى
+                orientation="h"  # إذا أردت وضع الأسطورة بشكل أفقي
             )
         )
-        # Adjust the background to make it transparent
+        # تعديل الخلفية لجعلها شفافة
         fig_pie_wait_time.update_layout(
-            paper_bgcolor='rgba(0,0,0,0)',  # Remove paper background
-            plot_bgcolor='rgba(0,0,0,0)'    # Remove plot background
+            paper_bgcolor='rgba(0,0,0,0)',  # إزالة خلفية الورقة
+            plot_bgcolor='rgba(0,0,0,0)'    # إزالة خلفية الرسم
         )
         st.plotly_chart(fig_pie_wait_time, use_container_width=True)
 
-    # Use the third column to display congestion status using Progress Bars
+    # استخدام العمود الثالث لعرض حالة الازدحام باستخدام Progress Bars
     with col3:
         st.markdown("<div style='margin-top: 0px;'></div>", unsafe_allow_html=True) 
         st.markdown(f"<h3 style='text-align: center; margin-bottom: 20px;'>Congestion Level</h3>", unsafe_allow_html=True)
@@ -651,69 +695,82 @@ if st.session_state.page == "SUMO Simulation":
 
         for index, row in df_filtered.iterrows():
             st.text(f"Lane {row['Lane ID']} - Vehicles: {row['Total Vehicle Count']}")
-            congestion_level = min(row['Total Vehicle Count'] / 50, 1.0)  # Normalize vehicle count
+            congestion_level = min(row['Total Vehicle Count'] / 50, 1.0)  # تطبيع قيمة عدد السيارات
             
-            # Determine congestion level color
-            if congestion_level >= 0.7:  # High congestion
-                inner_color = "#ff3333"  # Red
-            elif congestion_level >= 0.4:  # Medium congestion
-                inner_color = "#ffcc00"  # Orange
-            else:  # Low congestion
-                inner_color = "#00b300"  # Green
 
-            # Create a progress bar with a fixed outer color and a variable inner color
+            if congestion_level >= 0.7:  # ازدحام عالي
+                    inner_color = "#ff3333"  # أحمر داخلي
+            elif congestion_level >= 0.4:  # ازدحام متوسط
+                    inner_color = "#ffcc00"  # برتقالي داخلي
+            else:  # ازدحام منخفض
+                    inner_color = "#00b300"  # أخضر داخلي
+
+                # تطبيق شريط التقدم مع لون الإطار الخارجي الثابت ولون داخلي متغير
             st.markdown(f"""
                 <div style="position: relative; height: 15px; background-color: #2d2d2d; border-radius: 10px;">
                     <div style="width: {congestion_level * 100}%; height: 100%; background-color: {inner_color}; border-radius: 10px;"></div>
                 </div>
                 """, unsafe_allow_html=True)
 
+
         st.markdown("<div style='margin-bottom: 250px;'></div>", unsafe_allow_html=True)
 
-        # Bar chart to show total vehicles and average wait time for each street below Progress Bars
+        # رسم بار لتوضيح عدد السيارات ومتوسط وقت الانتظار لكل شارع تحت Progress Bars
         st.markdown(f"<h3 style='text-align: center;'>Total Vehicles and Average Wait Time for {selected_street}</h3>", unsafe_allow_html=True)
 
-        # Create a bar chart
-        fig_bar = go.Figure()
-        fig_bar.add_trace(go.Bar(
-            x=df_filtered['Lane ID'],
-            y=df_filtered['Total Vehicle Count'],
-            name='Total Vehicles',
-            marker_color='lightskyblue'
-        ))
-        fig_bar.add_trace(go.Bar(
-            x=df_filtered['Lane ID'],
-            y=df_filtered['Average Waiting Time (Lane) (s)'],
-            name='Average Wait Time (s)',
-            marker_color='orange'
-        ))
+        # إنشاء DataFrame جديد يحتوي على العدد الإجمالي ومتوسط وقت الانتظار لكل شارع
+        # إنشاء DataFrame جديد يحتوي على العدد الإجمالي ومتوسط وقت الانتظار لكل شارع
+        df['Street'] = df['Edge ID'].apply(lambda x: 'Road 1' if x == '636647587#2' else 
+                                                         'Road 2' if x == '1306997822#2' else 
+                                                         'Road 3' if x == '159072600#3' else 
+                                                         'Road 4')
+        
+        # Filter the DataFrame to include only rows where 'Lane ID' is 'All Lanes'
+        df_all_lanes = df[df['Lane ID'] == 'All Lanes']
+        
+        # Group by the new 'Street' column and calculate the total vehicles and average wait time
+        summary_df = df_all_lanes.groupby('Street').agg(
+                        Total_Vehicles=('Total Vehicle Count', 'sum'),
+                        Average_Wait_Time=('Average Waiting Time (Road) (s)', 'mean')
+                    ).reset_index()
 
-        # Customize layout
+        # فلترة البيانات على أساس الشارع المختار
+        filtered_summary_df = summary_df[summary_df['Street'] == selected_street]
+
+        # رسم بياني من نوع Bar Chart في نفس العمود
+        fig_bar = px.bar(filtered_summary_df, x='Street', 
+                                y=['Total_Vehicles', 'Average_Wait_Time'], 
+                                barmode='group', 
+                                title=f' ',
+                                labels={'value': 'Count', 'Street': 'Street'},
+                                color_discrete_sequence=['#a8ddb5', '#41ab5d'])  # يمكنك تغيير الألوان كما تريد
+        # تعديل الخلفية لجعلها شفافة
         fig_bar.update_layout(
-            barmode='group',
-            title_text=f'Total Vehicles and Average Wait Time for {selected_street}',
-            xaxis_title='Lane ID',
-            yaxis_title='Count / Time (s)',
-            legend=dict(x=0.5, y=-0.1, xanchor='center', yanchor='top', orientation='h'),
-            paper_bgcolor='rgba(0,0,0,0)',  # Remove paper background
-            plot_bgcolor='rgba(0,0,0,0)'    # Remove plot background
+            paper_bgcolor='rgba(0,0,0,0)',  # إزالة خلفية الورقة
+            plot_bgcolor='rgba(0,0,0,0)'    # إزالة خلفية الرسم
         )
-        st.plotly_chart(fig_bar)
+        st.plotly_chart(fig_bar, use_container_width=True)
+
+
+
+
+
+
 
 if st.session_state.page == "SUMO Simulation With Agent":
     st.markdown("""<div class="header"><h1> SUMO Simulation Dashboard (With Agent)</h1></div>""", unsafe_allow_html=True)
 
-    # Load data after applying the Agent
+    # تحميل البيانات بعد تطبيق الـ Agent
     df_with_agent = pd.read_csv('data/simulation_data_last.csv')
     sumo_video_path = "videos/Befor_Agent.mp4"
     st.video(sumo_video_path)
     st.markdown("<h1 style='font-size: 36px;'>This video shows the simulated traffic signal actions using SUMO</h1>", unsafe_allow_html=True)
 
     st.markdown("<br><br><br>", unsafe_allow_html=True)
-    # Select the street
+    # اختيار الشارع
     selected_street = st.selectbox("Select a Road", ['Road 1', 'Road 2', 'Road 3', 'Road 4'])
 
-    # Filter data based on the selected street
+    # فلترة البيانات بناءً على الشارع المختار
     if selected_street == 'Road 1':
         df_with_agent_filtered = df_with_agent[df_with_agent['Edge ID'] == '636647587#2'][df_with_agent['Lane ID'].isin(['Lane 1', 'Lane 2', 'Lane 3'])]
     elif selected_street == 'Road 2':
@@ -723,19 +780,19 @@ if st.session_state.page == "SUMO Simulation With Agent":
     else:
         df_with_agent_filtered = df_with_agent[df_with_agent['Edge ID'] == '53823318#1'][df_with_agent['Lane ID'].isin(['Lane 1', 'Lane 2', 'Lane 3'])]
 
-    # Calculate the percentage of average wait time
+    # حساب النسبة المئوية لمتوسط وقت الانتظار
     total_wait_time = df_with_agent['avg_waiting_time'].sum()
     road_wait_time = df_with_agent_filtered['avg_waiting_time'].sum()
     percentage_wait_time = (road_wait_time / total_wait_time) * 100 if total_wait_time != 0 else 0
 
-    # Divide the page into 3 main columns
+    # تقسيم الصفحة إلى 3 أعمدة رئيسية
     col1, col2, col3 = st.columns([1, 2, 1])
 
-    # Use the first column to display congestion indicators and percentage
+    # استخدام العمود الأول لعرض المؤشرات الخاصة بالازدحام والنسبة المئوية
     with col1:
         st.markdown(f"<h3 style='text-align: center;'>Busiest Lane Indicator</h3>", unsafe_allow_html=True)
 
-        # Calculate the busiest lane
+        # حساب المسار الأكثر ازدحامًا
         busiest_lane = df_with_agent_filtered.loc[df_with_agent_filtered['Total Vehicle Count'].idxmax()]
         fig_circle = go.Figure(go.Indicator(
             mode="gauge+number",
@@ -750,7 +807,7 @@ if st.session_state.page == "SUMO Simulation With Agent":
         st.plotly_chart(fig_circle)
         st.markdown("<div style='margin-bottom: 100px;'></div>", unsafe_allow_html=True)
 
-        # Display the average wait time percentage
+        # عرض النسبة المئوية لمتوسط وقت الانتظار
         st.markdown(f"<h3 style='text-align: center;'>Average Wait Time Percentage</h3>", unsafe_allow_html=True)
         fig_percentage = go.Figure(go.Indicator(
             mode="gauge+number",
@@ -768,9 +825,9 @@ if st.session_state.page == "SUMO Simulation With Agent":
         fig_percentage.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
         st.plotly_chart(fig_percentage)
 
-    # Use the second column to display pie charts
+    # استخدام العمود الثاني لعرض الرسوم البيانية (Pie Charts)
     with col2:
-        # Pie chart for vehicle count
+        # رسم الدائري (Pie Chart) لعدد السيارات
         st.markdown(f"<h3 style='text-align: center;'>Vehicle Count per Lane</h3>", unsafe_allow_html=True)
         colors = ['#e0f2e9', '#b2e0d6','#4fb99a']
 
@@ -778,46 +835,46 @@ if st.session_state.page == "SUMO Simulation With Agent":
         fig_pie_vehicles.update_traces(marker=dict(colors=colors))
         fig_pie_vehicles.update_layout(
             title={
-                'x': 0.5,  # Center the title horizontally
-                'xanchor': 'center',  # Ensure the center is the anchor point
-                'yanchor': 'top'  # Title at the top
+                'x': 0.5,  # محاذاة العنوان في المنتصف أفقيًا
+                'xanchor': 'center',  # تأكد من أن المركز هو نقطة التوسيط
+                'yanchor': 'top'  # العنوان في الأعلى
             },
             legend=dict(
-                x=0.5,  # Center the legend horizontally
-                y=-0.1,  # Legend at the bottom vertically; adjust as needed
-                xanchor="center",  # Center the legend
-                yanchor="top",  # Vertically align to the top
-                orientation="h"  # Horizontal legend
+                x=0.5,  # تمركز الأسطورة في الوسط أفقياً
+                y=-0.1,  # الأسطورة في الأسفل عمودياً، يمكنك ضبط هذه القيمة حسب الحاجة
+                xanchor="center",  # محاذاة الأسطورة إلى الوسط
+                yanchor="top",  # محاذاة عمودية إلى الأعلى
+                orientation="h"  # إذا أردت وضع الأسطورة بشكل أفقي
             )
         )
         fig_pie_vehicles.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
         st.plotly_chart(fig_pie_vehicles, use_container_width=True)
         st.markdown("<div style='margin-bottom: 60px;'></div>", unsafe_allow_html=True)
 
-        # Pie chart for average wait time
+        # رسم الدائري (Pie Chart) لمتوسط وقت الانتظار
         st.markdown(f"<h3 style='text-align: center;'>Average Waiting Time per Lane</h3>", unsafe_allow_html=True)
 
         fig_pie_wait_time = px.pie(df_with_agent_filtered, values='avg_waiting_time', names='Lane ID', title=f' ')
         fig_pie_wait_time.update_traces(marker=dict(colors=colors))
         fig_pie_wait_time.update_layout(
             title={
-                'x': 0.5,  # Center the title horizontally
-                'xanchor': 'center',  # Ensure the center is the anchor point
-                'yanchor': 'top'  # Title at the top
+                'x': 0.5,  # محاذاة العنوان في المنتصف أفقيًا
+                'xanchor': 'center',  # تأكد من أن المركز هو نقطة التوسيط
+                'yanchor': 'top'  # العنوان في الأعلى
             },
             legend=dict(
-                x=0.5,  # Center the legend horizontally
-                y=-0.1,  # Legend at the bottom vertically; adjust as needed
-                xanchor="center",  # Center the legend
-                yanchor="top",  # Vertically align to the top
-                orientation="h"  # Horizontal legend
+                x=0.5,  # تمركز الأسطورة في الوسط أفقياً
+                y=-0.1,  # الأسطورة في الأسفل عمودياً، يمكنك ضبط هذه القيمة حسب الحاجة
+                xanchor="center",  # محاذاة الأسطورة إلى الوسط
+                yanchor="top",  # محاذاة عمودية إلى الأعلى
+                orientation="h"  # إذا أردت وضع الأسطورة بشكل أفقي
             )
         )
         
         fig_pie_wait_time.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)', title_x=0.5)
         st.plotly_chart(fig_pie_wait_time, use_container_width=True)
 
-    # Use the third column to display congestion status using progress bars
+    # استخدام العمود الثالث لعرض حالة الازدحام باستخدام Progress Bars
     with col3:
             st.markdown("<div style='margin-top: 0px;'></div>", unsafe_allow_html=True) 
             st.markdown(f"<h3 style='text-align: center; margin-bottom: 20px;'>Congestion Level</h3>", unsafe_allow_html=True)
@@ -826,35 +883,40 @@ if st.session_state.page == "SUMO Simulation With Agent":
             for index, row in df_with_agent_filtered.iterrows():
                 st.text(f"Lane {row['Lane ID']} - Vehicles: {row['Total Vehicle Count']}")
 
-                congestion_level = min(row['Total Vehicle Count'] / 50, 1.0)  # Normalize vehicle count
+                congestion_level = min(row['Total Vehicle Count'] / 50, 1.0)  # تطبيع قيمة عدد السيارات
 
-                # Apply color conditions based on congestion level
-                if congestion_level >= 0.7:  # High congestion
-                    inner_color = "#ff3333"  # Red inner color
-                elif congestion_level >= 0.4:  # Medium congestion
-                    inner_color = "#ffcc00"  # Orange inner color
-                else:  # Low congestion
-                    inner_color = "#00b300"  # Green inner color
+                # تطبيق شروط الألوان بناءً على مستوى الازدحام
+                if congestion_level >= 0.7:  # ازدحام عالي
+                    inner_color = "#ff3333"  # أحمر داخلي
+                elif congestion_level >= 0.4:  # ازدحام متوسط
+                    inner_color = "#ffcc00"  # برتقالي داخلي
+                else:  # ازدحام منخفض
+                    inner_color = "#00b300"  # أخضر داخلي
 
-                # Apply progress bar with fixed outer color and variable inner color
+                # تطبيق شريط التقدم مع لون الإطار الخارجي الثابت ولون داخلي متغير
                 st.markdown(f"""
                 <div style="position: relative; height: 15px; background-color: #2d2d2d; border-radius: 10px;">
                     <div style="width: {congestion_level * 100}%; height: 100%; background-color: {inner_color}; border-radius: 10px;"></div>
                 </div>
                 """, unsafe_allow_html=True)
 
+
             st.markdown("<div style='margin-bottom: 250px;'></div>", unsafe_allow_html=True)
 
-            # Bar chart to illustrate the total number of vehicles and average wait time for each street under progress bars
+            # رسم بار لتوضيح عدد السيارات ومتوسط وقت الانتظار لكل شارع تحت Progress Bars
             st.markdown(f"<h3 style='text-align: center;'>Total Vehicles and Average Wait Time for {selected_street}</h3>", unsafe_allow_html=True)
 
-            df_with_agent_filtered['Street'] = df_with_agent_filtered['Edge ID'].apply(lambda x: 'Road 1' if x == '636647587#2' else 
-                                                     'Road 2' if x == '1306997822#2' else 
-                                                     'Road 3' if x == '159072600#3' else 
-                                                     'Road 4')
-    
+
+            # إنشاء DataFrame جديد يحتوي على العدد الإجمالي ومتوسط وقت الانتظار لكل شارع
+
+            # إنشاء DataFrame جديد يحتوي على العدد الإجمالي ومتوسط وقت الانتظار لكل شارع
+            df_with_agent['Street'] = df_with_agent['Edge ID'].apply(lambda x: 'Road 1' if x == '636647587#2' else 
+                                                             'Road 2' if x == '1306997822#2' else 
+                                                             'Road 3' if x == '159072600#3' else 
+                                                             'Road 4')
+        
             # Filter the DataFrame to include only rows where 'Lane ID' is 'All Lanes'
-            df_all_lanes = df_with_agent_filtered[df_with_agent_filtered['Lane ID'] == 'All Lanes']
+            df_all_lanes = df_with_agent[df_with_agent['Lane ID'] == 'All Lanes']
             
             # Group by the new 'Street' column and calculate the total vehicles and average wait time
             summary_df = df_all_lanes.groupby('Street').agg(
@@ -862,13 +924,77 @@ if st.session_state.page == "SUMO Simulation With Agent":
                             Average_Wait_Time=('avg_waiting_time', 'mean')
                         ).reset_index()
 
-            # Draw a bar chart in the same column
-            fig_bar = go.Figure()
-            fig_bar.add_trace(go.Bar(x=df_street_summary_all_lanes['Street'], y=df_street_summary_all_lanes['Total Vehicle Count'],
-                                      name='Total Vehicle Count', marker_color='blue'))
-            fig_bar.add_trace(go.Bar(x=df_street_summary_all_lanes['Street'], y=df_street_summary_all_lanes['avg_waiting_time'],
-                                      name='Average Waiting Time', marker_color='orange'))
-            fig_bar.update_layout(barmode='group', title=f'Total Vehicle Count and Average Wait Time for {selected_street}')
+            filtered_summary_df = summary_df[summary_df['Street'] == selected_street]
+
+            # رسم بياني من نوع Bar Chart في نفس العمود
+            fig_bar = px.bar(filtered_summary_df, x='Street',
+                                    y=['Total_Vehicles', 'Average_Wait_Time'],
+                                    barmode='group',
+                                    title=f' ',
+                                    labels={'value': 'Count', 'Street': 'Street'},
+                                    color_discrete_sequence=['#a8ddb5', '#41ab5d'])
+            fig_bar.update_layout(paper_bgcolor='rgba(0,0,0,0)', plot_bgcolor='rgba(0,0,0,0)')
             st.plotly_chart(fig_bar, use_container_width=True)
 
-            st.markdown("<br><br><br><br><br>", unsafe_allow_html=True)
+    st.markdown("<div style='margin-bottom: 100px;'></div>", unsafe_allow_html=True)
+
+    before_data = pd.read_csv('data/final_lane_road_data2.csv')  # يحتوي على بيانات قبل إضافة الوكيل
+    after_data = pd.read_csv('data/simulation_data_last.csv')  # يحتوي على بيانات بعد إضافة الوكيل
+
+        # تصفية البيانات للحصول على المعلومات الخاصة بجميع المسارات (All Lanes)
+    before_data_filtered = before_data[before_data['Lane ID'] == 'All Lanes'][['Edge ID', 'Average Waiting Time (Road) (s)']]
+    after_data_filtered = after_data[after_data['Lane ID'] == 'All Lanes'][['Edge ID', 'avg_waiting_time']]
+
+        # تغيير أسماء الأعمدة لسهولة التعامل معها
+    before_data_filtered.columns = ['Road', 'Average_Waiting_Time_Before']
+    after_data_filtered.columns = ['Road', 'Average_Waiting_Time_After']
+
+        # تعديل أسماء الشوارع إلى 1، 2، 3، 4
+    before_data_filtered['Road'] = before_data_filtered['Road'].replace({
+            '636647587#2': 'Road 1', 
+            '1306997822#2': 'Road 2', 
+            '159072600#3': 'Road 3', 
+            '53823318#1': 'Road 4'
+        })
+    after_data_filtered['Road'] = after_data_filtered['Road'].replace({
+            '636647587#2': 'Road 1', 
+            '1306997822#2': 'Road 2', 
+            '159072600#3': 'Road 3', 
+            '53823318#1': 'Road 4'
+        })
+    st.markdown("<div style='margin-bottom: 20px;'></div>", unsafe_allow_html=True)
+
+# المخطط النهائي أسفل الأعمدة الثلاثة
+    st.markdown("<h3 style='text-align: center;'>Comparison of Waiting Time Before and After Agent</h3>", unsafe_allow_html=True)
+        # دمج البيانات حسب الشارع
+    df_merged = pd.merge(before_data_filtered, after_data_filtered, on="Road")
+
+        # تحويل البيانات إلى شكل طويل لسهولة الرسم
+    df_long = pd.melt(df_merged, id_vars=['Road'], 
+                        value_vars=['Average_Waiting_Time_Before', 'Average_Waiting_Time_After'], 
+                        var_name='Condition', value_name='Average Waiting Time')
+
+        # رسم المخطط باستخدام Plotly مع إضافة الأرقام فوق الأعمدة
+    fig = px.bar(df_long, x='Road', y='Average Waiting Time', color='Condition', 
+                    barmode='group',
+                    color_discrete_sequence=['#a8ddb5', '#41ab5d'],text='Average Waiting Time')  # إضافة القيم كـ text فوق الأعمدة
+
+        # تعديل عنوان المخطط وموقعه
+    fig.update_layout(
+            height=800,  # زيادة الارتفاع
+            width=1500,
+            xaxis_title="Road",
+            yaxis_title="Average Waiting Time (s)",
+            legend_title="Condition",
+            paper_bgcolor='rgba(0,0,0,0)',  # إزالة خلفية الورقة
+            plot_bgcolor='rgba(0,0,0,0)',
+            font=dict(
+            size=16  # تكبير حجم الخط
+            )   # إزالة خلفية الرسم
+        )
+
+        # تعديل الـ layout لإضافة الأرقام فوق الأعمدة تلقائيًا
+    fig.update_traces(texttemplate='%{text:.2f}', textposition='outside')
+
+        # عرض المخطط في Streamlit
+    st.plotly_chart(fig, use_container_width=True)
