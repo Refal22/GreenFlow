@@ -197,7 +197,7 @@ if st.sidebar.button("SUMO Simulation With Agent"):
     st.session_state.page = "SUMO Simulation With Agent"
 
 
-st.sidebar.markdown("<br><br><br>", unsafe_allow_html=True)
+
 st.sidebar.markdown("<br><br><br>", unsafe_allow_html=True)
 st.sidebar.markdown("<br><br><br>", unsafe_allow_html=True)
 st.sidebar.markdown("<br><br><br>", unsafe_allow_html=True)
