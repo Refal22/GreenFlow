@@ -719,14 +719,20 @@ if st.session_state.page == "SUMO Simulation":
         st.markdown(f"<h3 style='text-align: center;'>Total Vehicles and Average Wait Time for {selected_street}</h3>", unsafe_allow_html=True)
 
         # إنشاء DataFrame جديد يحتوي على العدد الإجمالي ومتوسط وقت الانتظار لكل شارع
+        # إنشاء DataFrame جديد يحتوي على العدد الإجمالي ومتوسط وقت الانتظار لكل شارع
         df['Street'] = df['Edge ID'].apply(lambda x: 'Road 1' if x == '636647587#2' else 
-                                                     'Road 2' if x == '1306997822#2' else 
-                                                     'Road 3' if x == '159072600#3' else 
-                                                     'Road 4')
-        summary_df = df.groupby('Street').agg(
-                    Total_Vehicles=('Total Vehicle Count', 'sum'),
-                    Average_Wait_Time=('Average Waiting Time (Road) (s)', 'mean')
-                ).reset_index()
+                                                         'Road 2' if x == '1306997822#2' else 
+                                                         'Road 3' if x == '159072600#3' else 
+                                                         'Road 4')
+        
+        # Filter the DataFrame to include only rows where 'Lane ID' is 'All Lanes'
+        df_all_lanes = df[df['Lane ID'] == 'All Lanes']
+        
+        # Group by the new 'Street' column and calculate the total vehicles and average wait time
+        summary_df = df_all_lanes.groupby('Street').agg(
+                        Total_Vehicles=('Total Vehicle Count', 'sum'),
+                        Average_Wait_Time=('Average Waiting Time (Road) (s)', 'mean')
+                    ).reset_index()
 
         # فلترة البيانات على أساس الشارع المختار
         filtered_summary_df = summary_df[summary_df['Street'] == selected_street]
