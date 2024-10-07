@@ -381,7 +381,7 @@ def set_view(view):
 if st.session_state.page == "Dashboard":
     st.markdown("""<div class="header"><h1> Traffic Analysis Dashboard </h1></div>""", unsafe_allow_html=True)
 
-    df = pd.read_csv('vehicle_count_time.csv')
+    df = pd.read_csv('data/vehicle_count_time.csv')
 
 
     selected_street = st.selectbox("Select a Road", ['Road 1', 'Road 2'])
