@@ -910,13 +910,13 @@ if st.session_state.page == "SUMO Simulation With Agent":
             # إنشاء DataFrame جديد يحتوي على العدد الإجمالي ومتوسط وقت الانتظار لكل شارع
 
             # إنشاء DataFrame جديد يحتوي على العدد الإجمالي ومتوسط وقت الانتظار لكل شارع
-            df_with_agent['Street'] = df['Edge ID'].apply(lambda x: 'Road 1' if x == '636647587#2' else 
+            df_with_agent['Street'] = df_with_agent['Edge ID'].apply(lambda x: 'Road 1' if x == '636647587#2' else 
                                                              'Road 2' if x == '1306997822#2' else 
                                                              'Road 3' if x == '159072600#3' else 
                                                              'Road 4')
         
             # Filter the DataFrame to include only rows where 'Lane ID' is 'All Lanes'
-            df_all_lanes = df[df['Lane ID'] == 'All Lanes']
+            df_all_lanes = df_with_agent[df_with_agent['Lane ID'] == 'All Lanes']
             
             # Group by the new 'Street' column and calculate the total vehicles and average wait time
             summary_df = df_all_lanes.groupby('Street').agg(
