@@ -921,7 +921,7 @@ if st.session_state.page == "SUMO Simulation With Agent":
             # Group by the new 'Street' column and calculate the total vehicles and average wait time
             summary_df = df_all_lanes.groupby('Street').agg(
                             Total_Vehicles=('Total Vehicle Count', 'sum'),
-                            Average_Wait_Time=('Average Waiting Time (Road) (s)', 'mean')
+                            Average_Wait_Time=('avg_waiting_time', 'mean')
                         ).reset_index()
 
             filtered_summary_df = summary_df[summary_df['Street'] == selected_street]
