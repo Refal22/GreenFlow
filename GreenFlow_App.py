@@ -22,6 +22,7 @@ cfg_enable_url_download = True
 # URL for the YOLO model
 url = "https://archive.org/download/yolo-model-1/YOLO_Model%20%281%29.pt"
 model_path = "models/YOLO_Model (1).pt"
+model = torch.load(model_path)
 
 st.set_page_config(
     page_title="GreenFlow",
@@ -274,7 +275,7 @@ if st.session_state.page == "Visual Content Processing":
                 break
 
             # YOLO detection
-            results = model_path.track(frame, persist=True)
+            results = model.track(frame, persist=True)
 
             for result in results:
                 for obj in result.boxes:
