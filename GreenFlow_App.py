@@ -765,7 +765,7 @@ if st.session_state.page == "SUMO Simulation With Agent":
     st.markdown("""<div class="header"><h1> SUMO Simulation Dashboard (With Agent)</h1></div>""", unsafe_allow_html=True)
 
     # تحميل البيانات بعد تطبيق الـ Agent
-    df_with_agent = pd.read_csv('simulation_data_last.csv')
+    df_with_agent = pd.read_csv('data/simulation_data_last.csv')
     sumo_video_path = "videos/Befor_Agent.mp4"
     st.video(sumo_video_path)
     st.markdown("<h1 style='font-size: 36px;'>This video shows the simulated traffic signal actions using SUMO</h1>", unsafe_allow_html=True)
