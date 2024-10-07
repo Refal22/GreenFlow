@@ -558,7 +558,7 @@ if st.session_state.page == "SUMO Simulation":
     df = pd.read_csv('data/final_lane_road_data2.csv')
 
     sumo_video_path2 = "videos/After_Agent.mp4"
-    st.video(sumo_video_path2)
+    st.video(sumo_video_path2, width=700, height=400)
 
     st.markdown("<br><br><br>", unsafe_allow_html=True)
     
