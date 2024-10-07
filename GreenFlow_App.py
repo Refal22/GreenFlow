@@ -14,7 +14,6 @@ import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 import urllib.request
 from PIL import Image
-import urllib.request
 
 # Enable URL download for the model
 cfg_enable_url_download = True
