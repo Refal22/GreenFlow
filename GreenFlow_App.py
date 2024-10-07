@@ -501,7 +501,7 @@ if st.session_state.page == "Dashboard":
     # استخدام العمود الثالث لعرض حالة الازدحام باستخدام Progress Bars
     with col3:
         st.markdown("<div style='margin-top: 0px;'></div>", unsafe_allow_html=True) 
-        st.markdown(f"<h3 style='text-align: center; margin-bottom: 20px;'>Total Vehicle</h3>", unsafe_allow_html=True)
+        st.markdown(f"<h3 style='text-align: center; margin-bottom: 20px;'>Congestion Level</h3>", unsafe_allow_html=True)
         st.markdown("<div style='margin-top: 70px;'></div>", unsafe_allow_html=True)
 
         for index, row in df_filtered.iterrows():
@@ -525,7 +525,7 @@ if st.session_state.page == "Dashboard":
         st.markdown("<div style='margin-bottom: 150px;'></div>", unsafe_allow_html=True)
 
         # رسم بار لتوضيح عدد السيارات ومتوسط وقت الانتظار لكل شارع تحت Progress Bars
-        st.markdown(f"<h3 style='text-align: center;'>Total Vehicle and Average Wait Time for {selected_street}</h3>", unsafe_allow_html=True)
+        st.markdown(f"<h3 style='text-align: center;'>Total Vehicles and Average Wait Time for {selected_street}</h3>", unsafe_allow_html=True)
 
         # إنشاء DataFrame جديد يحتوي على العدد الإجمالي ومتوسط وقت الانتظار لكل شارع
         df['Street'] = df['ROI'].apply(lambda x: 'Road 1' if x in ['ROI 1', 'ROI 2', 'ROI 3', 'ROI 4', 'ROI 5'] else 'Road 2')
@@ -690,7 +690,7 @@ if st.session_state.page == "SUMO Simulation":
     # استخدام العمود الثالث لعرض حالة الازدحام باستخدام Progress Bars
     with col3:
         st.markdown("<div style='margin-top: 0px;'></div>", unsafe_allow_html=True) 
-        st.markdown(f"<h3 style='text-align: center; margin-bottom: 20px;'>Total Vehicle</h3>", unsafe_allow_html=True)
+        st.markdown(f"<h3 style='text-align: center; margin-bottom: 20px;'>Congestion Level</h3>", unsafe_allow_html=True)
         st.markdown("<div style='margin-top: 70px;'></div>", unsafe_allow_html=True)
 
         for index, row in df_filtered.iterrows():
@@ -716,7 +716,7 @@ if st.session_state.page == "SUMO Simulation":
         st.markdown("<div style='margin-bottom: 250px;'></div>", unsafe_allow_html=True)
 
         # رسم بار لتوضيح عدد السيارات ومتوسط وقت الانتظار لكل شارع تحت Progress Bars
-        st.markdown(f"<h3 style='text-align: center;'>Total Vehicle and Average Wait Time for {selected_street}</h3>", unsafe_allow_html=True)
+        st.markdown(f"<h3 style='text-align: center;'>Total Vehicles and Average Wait Time for {selected_street}</h3>", unsafe_allow_html=True)
 
 
         # إنشاء DataFrame جديد يحتوي على العدد الإجمالي ومتوسط وقت الانتظار لكل شارع
@@ -899,7 +899,7 @@ if st.session_state.page == "SUMO Simulation With Agent":
             st.markdown("<div style='margin-bottom: 250px;'></div>", unsafe_allow_html=True)
 
             # رسم بار لتوضيح عدد السيارات ومتوسط وقت الانتظار لكل شارع تحت Progress Bars
-            st.markdown(f"<h3 style='text-align: center;'>Total Vehicle and Average Wait Time for {selected_street}</h3>", unsafe_allow_html=True)
+            st.markdown(f"<h3 style='text-align: center;'>Total Vehicles and Average Wait Time for {selected_street}</h3>", unsafe_allow_html=True)
 
 
             # إنشاء DataFrame جديد يحتوي على العدد الإجمالي ومتوسط وقت الانتظار لكل شارع
