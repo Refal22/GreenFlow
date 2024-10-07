@@ -203,7 +203,7 @@ st.sidebar.markdown("<br><br><br>", unsafe_allow_html=True)
 img = Image.open("videos/traffic_light.png")
 
 # عرض الصورة
-st.sidebar.image(img, caption="Traffic Light", use_column_width=True)
+st.sidebar.image(img, use_column_width=True)
 st.sidebar.markdown("</div>", unsafe_allow_html=True)
 
 
