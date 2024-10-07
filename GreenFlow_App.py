@@ -203,7 +203,7 @@ st.sidebar.markdown("<br><br><br>", unsafe_allow_html=True)
 st.sidebar.markdown("<br><br><br>", unsafe_allow_html=True)
 #st.sidebar.image("https://www.vhv.rs/dpng/d/525-5255156_traffic-light-transparent-images-png-transparent-traffic-light.png", width=250)
 
-img = Image.open("videos/traffic_light")
+img = Image.open("videos/traffic_light.png")
 
 # عرض الصورة
 st.sidebar.image(img, caption="Traffic Light", use_column_width=True)
