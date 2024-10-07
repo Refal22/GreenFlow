@@ -718,7 +718,6 @@ if st.session_state.page == "SUMO Simulation":
         # رسم بار لتوضيح عدد السيارات ومتوسط وقت الانتظار لكل شارع تحت Progress Bars
         st.markdown(f"<h3 style='text-align: center;'>Total Vehicles and Average Wait Time for {selected_street}</h3>", unsafe_allow_html=True)
 
-
         # إنشاء DataFrame جديد يحتوي على العدد الإجمالي ومتوسط وقت الانتظار لكل شارع
         df['Street'] = df['Edge ID'].apply(lambda x: 'Road 1' if x == '636647587#2' else 
                                                      'Road 2' if x == '1306997822#2' else 
