@@ -405,48 +405,54 @@ if st.session_state.page == "Dashboard":
         st.markdown(f"<h3 style='text-align: center;'>Busiest Lane Indicator</h3>", unsafe_allow_html=True)
         
         # حساب المسار الأكثر ازدحامًا
-        busiest_lane = df_filtered.loc[df_filtered['Vehicle Count'].idxmax()]
-        fig_circle = go.Figure(go.Indicator(
-            mode="gauge+number",
-            value=busiest_lane['Vehicle Count'],
-            title={'text': f"Busiest Lane: {busiest_lane['ROI']}"},
-            gauge={
-                'axis': {'range': [0, df_filtered['Vehicle Count'].max()]},
-                'bar': {'color': "red"}
-            }
-        ))
-        # تعديل الخلفية لجعلها شفافة
-        fig_circle.update_layout(
-            paper_bgcolor='rgba(0,0,0,0)',  # إزالة خلفية الورقة
-            plot_bgcolor='rgba(0,0,0,0)'    # إزالة خلفية الرسم
-        )
-        st.plotly_chart(fig_circle)
-        st.markdown("<div style='margin-bottom: 100px;'></div>", unsafe_allow_html=True)
-
-        # عرض النسبة المئوية لمتوسط وقت الانتظار
-        st.markdown(f"<h3 style='text-align: center;'>Average Wait Time Percentage</h3>", unsafe_allow_html=True)
+        # Check if filtered DataFrame is empty
+        if not df_filtered.empty and 'Vehicle Count' in df_filtered.columns:
+            # Check if 'Vehicle Count' has any valid non-null data
+            if df_filtered['Vehicle Count'].notna().any():
+                
+                
+                busiest_lane = df_filtered.loc[df_filtered['Vehicle Count'].idxmax()]
+                fig_circle = go.Figure(go.Indicator(
+                    mode="gauge+number",
+                    value=busiest_lane['Vehicle Count'],
+                    title={'text': f"Busiest Lane: {busiest_lane['ROI']}"},
+                    gauge={
+                        'axis': {'range': [0, df_filtered['Vehicle Count'].max()]},
+                        'bar': {'color': "red"}
+                    }
+                ))
+                # تعديل الخلفية لجعلها شفافة
+                fig_circle.update_layout(
+                    paper_bgcolor='rgba(0,0,0,0)',  # إزالة خلفية الورقة
+                    plot_bgcolor='rgba(0,0,0,0)'    # إزالة خلفية الرسم
+                )
+                st.plotly_chart(fig_circle)
+                st.markdown("<div style='margin-bottom: 100px;'></div>", unsafe_allow_html=True)
         
-        fig_percentage = go.Figure(go.Indicator(
-            mode="gauge+number",
-            value=percentage_wait_time,
-            number={'suffix': "%"},
-            title={'text': f'Percentage of Wait Time in {selected_street}'},
-            gauge={
-                'axis': {'range': [0, 100]},
-                'bar': {'color': "orange"},
-                'steps': [
-                    {'range': [0, 50], 'color': "lightgray"},
-                    {'range': [50, 100], 'color': "gray"}]
-            }
-        ))
-        # تعديل الخلفية لجعلها شفافة
-        fig_percentage.update_layout(
-            paper_bgcolor='rgba(0,0,0,0)',  # إزالة خلفية الورقة
-            plot_bgcolor='rgba(0,0,0,0)'    # إزالة خلفية الرسم
-        )
-        st.plotly_chart(fig_percentage)
-
-    # استخدام العمود الثاني لعرض الرسوم البيانية (Pie Charts)
+                # عرض النسبة المئوية لمتوسط وقت الانتظار
+                st.markdown(f"<h3 style='text-align: center;'>Average Wait Time Percentage</h3>", unsafe_allow_html=True)
+                
+                fig_percentage = go.Figure(go.Indicator(
+                    mode="gauge+number",
+                    value=percentage_wait_time,
+                    number={'suffix': "%"},
+                    title={'text': f'Percentage of Wait Time in {selected_street}'},
+                    gauge={
+                        'axis': {'range': [0, 100]},
+                        'bar': {'color': "orange"},
+                        'steps': [
+                            {'range': [0, 50], 'color': "lightgray"},
+                            {'range': [50, 100], 'color': "gray"}]
+                    }
+                ))
+                # تعديل الخلفية لجعلها شفافة
+                fig_percentage.update_layout(
+                    paper_bgcolor='rgba(0,0,0,0)',  # إزالة خلفية الورقة
+                    plot_bgcolor='rgba(0,0,0,0)'    # إزالة خلفية الرسم
+                )
+                st.plotly_chart(fig_percentage)
+        
+            # استخدام العمود الثاني لعرض الرسوم البيانية (Pie Charts)
     with col2:
         # رسم الدائري (Pie Chart) لعدد السيارات
         st.markdown(f"<h3 style='text-align: center;'>Vehicle Count per Lane</h3>", unsafe_allow_html=True)
