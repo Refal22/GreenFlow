@@ -528,11 +528,11 @@ if st.session_state.page == "Dashboard":
         st.markdown(f"<h3 style='text-align: center;'>Total Vehicles and Average Wait Time for {selected_street}</h3>", unsafe_allow_html=True)
 
         # إنشاء DataFrame جديد يحتوي على العدد الإجمالي ومتوسط وقت الانتظار لكل شارع
-        df['Street'] = df['ROI'].apply(lambda x: 'Road 1' if x in ['ROI 1', 'ROI 2', 'ROI 3', 'ROI 4', 'ROI 5'] else 'Road 2')
-        summary_df = df.groupby('Street').agg(
-                    Total_Vehicles=('Vehicle Count', 'sum'),
-                    Average_Wait_Time=('Average Wait Time (s)', 'mean')
-                ).reset_index()
+        df['Street'] = df['ROI'].apply(lambda x: 'Road 1' if x in ['ROI 1', 'ROI 2', 'ROI 3', 'ROI 4', 'ROI 5'] else ('Road 2' if x in ['ROI 6', 'ROI 7', 'ROI 8', 'ROI 9', 'ROI 10'] else 'Other'))
+        summary_df = df[df['Street'] != 'Other'].groupby('Street').agg(
+                        Total_Vehicles=('Vehicle Count', 'sum'),
+                        Average_Wait_Time=('Average Wait Time (s)', 'mean')
+                    ).reset_index()
 
         # فلترة البيانات على أساس الشارع المختار
         filtered_summary_df = summary_df[summary_df['Street'] == selected_street]
